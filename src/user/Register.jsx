@@ -22,14 +22,16 @@ export function Register() {
                 body: JSON.stringify({ username, email, password }),
             });
 
-            if (!response.ok) throw new Error('Impossible de créer l’utilisateur');
+            const data = await response.json(); // récupère le vrai message de l'API
+
+            if (!response.ok) throw new Error(data.error || 'Impossible de créer l’utilisateur');
 
             alert('✅ Utilisateur créé avec succès !');
             navigate('/'); // redirige vers la page de connexion
         } catch (err) {
-            alert(err.message);
+            alert(err.message); // affichera maintenant le vrai message de l'API
         }
-    };
+    }; // <-- fermeture de handleRegister ici
 
     return (
         <div className="login-container">

@@ -1,32 +1,38 @@
 import { sql } from '@vercel/postgres';
+import CryptoJS from 'crypto-js';
 import crypto from 'crypto';
 
 export default async function handler(req, res) {
+    console.log('Body reçu :', req.body);
     if (req.method !== 'POST') {
-        return res.status(405).end();
+        return res.status(405).json({ error: 'Méthode non autorisée' });
     }
 
-    const { username, email, password } = req.body;
+    try {
+        const { username, email, password } = req.body; // <- ici
 
-    if (!username || !email || !password) {
-        return res.status(400).json({ error: 'Tous les champs sont obligatoires' });
+        if (!username || !email || !password) {
+            return res.status(400).json({ error: 'Tous les champs sont obligatoires' });
+        }
+
+        const exists = await sql`SELECT * FROM users WHERE username = ${username} OR email = ${email}`;
+        if (exists.rowCount > 0) {
+            return res.status(409).json({ error: 'Username ou email déjà utilisé' });
+        }
+
+        const hashedPassword = CryptoJS.SHA256(password).toString();
+        const external_id = crypto.randomUUID();
+        const created_on = new Date().toISOString();
+
+        await sql`
+      INSERT INTO users (username, email, password, external_id, created_on)
+      VALUES (${username}, ${email}, ${hashedPassword}, ${external_id}, ${created_on})
+    `;
+
+        return res.status(201).json({ message: 'Utilisateur créé', username, external_id });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: error.message });
     }
-
-    const exists = await sql`
-    SELECT * FROM users WHERE username = ${username} OR email = ${email}
-  `;
-    if (exists.rowCount > 0) {
-        return res.status(409).json({ error: 'Username ou email déjà utilisé' });
-    }
-
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-    const external_id = crypto.randomUUID();
-    const created_on = new Date().toISOString();
-
-    await sql`
-    INSERT INTO users (username, email, password, external_id, created_on)
-    VALUES (${username}, ${email}, ${hashedPassword}, ${external_id}, ${created_on})
-  `;
-
-    return res.status(201).json({ message: 'Utilisateur créé', username, external_id });
 }
