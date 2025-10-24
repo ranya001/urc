@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="caa110ff-33fa-4129-af04-93080697413d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/user/chat/ChatContainer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/user/chat/MessagesList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/user/chat/UsersAndRoomsList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/messages/[id].js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/chatSlice.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/message.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/message.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/session.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/session.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/user/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/chat/ChatContainer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/chat/ChatContainer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/chat/MessagesList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/chat/MessagesList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/chat/UsersAndRoomsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/chat/UsersAndRoomsList.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +50,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/rgharad/Bureau/urc-main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -67,7 +73,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1761138280293</updated>
-      <workItem from="1761138281616" duration="21271000" />
+      <workItem from="1761138281616" duration="49453000" />
     </task>
     <servers />
   </component>

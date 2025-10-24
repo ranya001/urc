@@ -1,23 +1,48 @@
-import {getConnecterUser, triggerNotConnected} from "../lib/session";
-// import { Redis } from '@upstash/redis';
-// const PushNotifications = require("@pusher/push-notifications-server");
+// /api/message.js
+const { getConnecterUser, triggerNotConnected } = require("../lib/session.js");
+const { Redis } = require('@upstash/redis');
 
-export default async (request, response) => {
+const redis = Redis.fromEnv();
+
+module.exports = async function handler(request, response) {
+    if (request.method !== 'POST') {
+        return response.status(405).json({ error: 'Méthode non autorisée' });
+    }
+
     try {
-        const headers = new Headers(request.headers);
+        // ✅ Vérification de la session utilisateur
         const user = await getConnecterUser(request);
-        if (user === undefined || user === null) {
-            console.log("Not connected");
-            triggerNotConnected(response);
+        if (!user) return triggerNotConnected(response);
+
+        // ✅ Récupération des données depuis le body
+        const { toUserId, text } = request.body;
+
+        // ✅ Vérifie les données
+        if (!toUserId || !text) {
+            return response.status(400).json({ error: "Données manquantes" });
         }
 
-        const message = await request.body;
+        const fromId = user.id;
+        const minId = Math.min(fromId, toUserId);
+        const maxId = Math.max(fromId, toUserId);
+        const key = `messages:${minId}:${maxId}`;
 
-        // TODO : save message
+        // ✅ Message stocké
+        const message = {
+            fromId,
+            from: user.username,
+            toId: toUserId,
+            text,
+            date: new Date().toISOString(),
+        };
 
-        response.send("OK");
-    } catch (error) {
-        console.log(error);
-        response.status(500).json(error);
+        // ✅ Enregistrer dans Redis
+        await redis.lpush(key, JSON.stringify(message));
+        await redis.expire(key, 60 * 60 * 24);
+
+        return response.status(200).json({ ok: true, message });
+    } catch (err) {
+        console.error("Erreur dans /api/message.js :", err);
+        return response.status(500).json({ error: "Erreur interne du serveur" });
     }
 };

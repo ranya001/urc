@@ -1,47 +1,37 @@
-// src/user/chat/UsersAndRoomsList.jsx
 import React from 'react';
 
 export function UsersAndRoomsList({ users, rooms, onSelect }) {
     return (
-        <div style={{ width: '25%', borderRight: '1px solid #ccc', padding: '1rem', overflowY: 'auto' }}>
+        <div style={{ width: '25%', borderRight: '1px solid #ccc', padding: '1rem' }}>
             <h3>Utilisateurs</h3>
-            {users.map((user) => (
-                <button
+            {users.map(user => (
+                <div
                     key={user.user_id}
-                    onClick={() => onSelect(user)}
-                    style={{
-                        display: 'block',
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '0.5rem',
-                        border: 'none',
-                        background: 'transparent',
-                        cursor: 'pointer',
-                        marginBottom: '0.25rem',
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => {
+                        onSelect(user);
+                        window.history.pushState({}, '', `/messages/user/${user.user_id}`);
                     }}
+                    onKeyPress={e => e.key === 'Enter' && onSelect(user)}
+                    style={{ cursor: 'pointer', padding: '0.5rem' }}
                 >
-                    👤 {user.username}
-                </button>
+                    {user.username} - Dernière connexion: {user.last_login || 'inconnue'}
+                </div>
             ))}
 
             <h3>Salons</h3>
-            {rooms.map((room) => (
-                <button
+            {rooms.map(room => (
+                <div
                     key={room.id}
-                    onClick={() => onSelect(room)}
-                    style={{
-                        display: 'block',
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '0.5rem',
-                        border: 'none',
-                        background: 'transparent',
-                        cursor: 'pointer',
-                        marginBottom: '0.25rem',
-                    }}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => onSelect({ ...room, isRoom: true })}
+                    onKeyPress={e => e.key === 'Enter' && onSelect({ ...room, isRoom: true })}
+                    style={{ cursor: 'pointer', padding: '0.5rem' }}
                 >
                     💬 {room.name}
-                </button>
+                </div>
             ))}
         </div>
     );
